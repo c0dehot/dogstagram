@@ -34,23 +34,25 @@ async function apiCall( url, method='get', data={} ){
     return result
 }
 
-async function taskList( due='' ){
-    const taskList = await apiCall( '/api/tasks' + (due ? `/${due}` : '') )
-    console.log( `[taskList] due='${due}'`, taskList )
+async function getDogs(){
+    const dogList = await apiCall( '/api/dogs' )
+    console.log( '[dogList]', dogList )
 
-    const listEl = document.querySelector('#list')
+    const listEl = document.querySelector('#dogList')
     listEl.innerHTML = ''
 
-    taskList.forEach( function( task ){
+    dogList.forEach( function( dog ){
         listEl.innerHTML += `
-        <li class="list-group-item">
-            <div class="float-right p-0">
-                <button onClick="taskDelete(${task.id})" class="border-0 btn-transition btn btn-outline-danger"> <i class="fa fa-trash"></i> </button>
+            <div class="card">
+                <img src="${dog.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${dog.title}</h5>
+                    <img src='${dog.owner.thumbnail}' class="img-profile img-thumbnail rounded-circle" />`
+                + dog.keywords.map( keyword => `<span class="badge bg-primary">${keyword}</span>` )
+                + ` 
+                </div>
+                <small class="text-muted">${dog.createdAt ? 'Posted: '+moment(dog.createdAt).format('MMM Do, YYYY') : '' }</small>
             </div>
-            <div class="todo-indicator bg-${task.priority}"></div>
-            <h3 class="text-primary">${task.info}</h3>
-            <small class="text-muted">${task.due ? 'Due: '+moment(task.due).format('MMM Do, YYYY') : '' }</small>
-        </li>
         `
     })
 }
@@ -61,8 +63,8 @@ async function taskList( due='' ){
 async function mainApp(){
     console.log( '[mainApp] starting...' )
 
-    // show the task list ...
-    taskList()
+    // show the dog list ...
+    getDogs()
 }
 
 function showTodaysTasks(){

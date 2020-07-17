@@ -6,6 +6,8 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/${process.env.D
 const db = require( '../models')
 console.log( 'attached the mongoose schemas: ', db )
 
+let userId
+
 async function initDb(){
     await db.Dogs.deleteMany()
     await db.Users.deleteMany()
@@ -17,25 +19,28 @@ async function initDb(){
         password: 'test'
     } )
     console.log( '.. created user: ', userData )
+    userId = userData._id
 
     // seed some dog data
     const dogInsert = await db.Dogs.insertMany([
-        { ownerId: userData._id,
+        { owner: userData._id,
             title: 'Woofalicious',
             image: 'https://cdn.discordapp.com/attachments/708208453528584212/733690892464160798/hqdefault.png',
             keywords: [ 'Lovable' ]},
-        { ownerId: userData._id,
+        { owner: userData._id,
             title: 'Peaceful meditation',
             image: 'https://cdn.discordapp.com/attachments/708208453528584212/733689355524243508/unknown.png',
             keywords: [ 'Zen'] }
     ])
 }
 function getDogList( criteria={} ){
-    return db.Dogs.find( criteria, '-__v' ).populate('ownerId', '-password -__v -createdAt -updatedAt' )
+    return db.Dogs.find( criteria, '-__v' ).populate('owner', '-password -__v -createdAt -updatedAt' )
 }
 
 function saveDog( dogData ){
-    return null
+    // TEMPORARY HACK, remove when sessions are crated!!!
+    dogData.owner = userId
+    return db.Dogs.create( dogData )
 }
 
 module.exports = {

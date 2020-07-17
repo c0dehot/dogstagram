@@ -22,27 +22,22 @@
 
 <!-- we will start the app when this page is loaded by running it with onLoad... -->
 <body onLoad="mainApp()">
+    <style>
+        /* image profile in the cards */
+        .img-profile {
+            width: 64px;
+            float: right;
+        }
+    </style>
     <div class="container"> 
         <img id="logo" src="./assets/logo.png" class="float-left" />
         <h1>Dogstagram</h1>
 
         <div class="row d-flex justify-content-center container">
             <!-- don't made the list too wide if large screen -->
-            <div class="col-md-8">
+            <div id="dogList" class="col-md-8">
 
-                <div class="card">
-                    <img src="https://cdn.discordapp.com/attachments/708208453528584212/733690892464160798/hqdefault.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Doug's Dog</h5>
-                      [profile user thumbnail+name]
-                    
-                      <span class="badge bg-primary">Lovable</span>
-                        <span class="badge bg-secondary">Sleepy</span>
-                        <span class="badge bg-success">Happy</span>
-                        <span class="badge bg-danger">Fierce</span>
-                    </div>
-                  </div>
-            </div>
+                
         </div>
     </div>
 </body>

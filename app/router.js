@@ -1,13 +1,29 @@
 const orm = require('./orm');
 
 function router( app ){
-    app.get('/api/dogs/', async function(req, res) {
+    app.get('/api/dogs', async function(req, res) {
         console.log( '[GET] getting dog list')
         const list = await orm.getDogList()
 
         res.send( list )
     })
 
+    app.post( '/api/dogs', async function( req, res ){
+        const dogData = {
+            title: req.body.title.trim(),
+            image: req.body.image.trim(),
+            keywords: req.body.keywords
+        }
+        const saveResult = await orm.saveDog( dogData )
+        console.log( '[POST /api/dogs] saveResult: ', saveResult )
+
+        if( saveResult._id ){
+            res.send( { status: true, message: 'Dog saved' } )
+        } else {
+            res.send( { status: false, message: 'Someting went wong' } )
+        }
+
+    })
     // app.post('/api/tasks', async function(req, res) {
     //     console.log( '[POST] we received this data:', req.body )
     //     const saveResult = await orm.insertTask( req.body.priority, req.body.info, req.body.due )

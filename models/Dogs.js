@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const DogSchema = new Schema ({
-    ownerId: { type: Schema.Types.ObjectId, ref: 'Users' },
+    owner: { type: Schema.Types.ObjectId, ref: 'Users' },
     title:  {
         type: String,
         trim: true,

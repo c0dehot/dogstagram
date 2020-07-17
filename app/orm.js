@@ -8,7 +8,7 @@ console.log( 'attached the mongoose schemas: ', db )
 
 async function initDb(){
     // seed some dog data
-    const dogResult = await db.dogs.insertMany([
+    const dogResult = await db.Dogs.insertMany([
         { title: 'Woofalicious',
             image: 'https://cdn.discordapp.com/attachments/708208453528584212/733690892464160798/hqdefault.png',
             keywords: [ 'Lovable' ]},

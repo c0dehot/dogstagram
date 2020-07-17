@@ -18,7 +18,7 @@ const UserSchema = new Schema ({
         type: String,
         required: 'Please give a password' },
     dogs: [
-        { _id: Schema.Types.ObjectId, ref: 'Dogs' }
+        { type: Schema.Types.ObjectId, ref: 'Dogs' }
     ]
 }, {
     timestamps: true /* creates corresponding timestamp fields: createdAt, updatedAt */

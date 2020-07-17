@@ -1,7 +1,7 @@
 {
-  "name": "project2-template",
+  "name": "dogstagram",
   "version": "1.0.0",
-  "description": "",
+  "description": "Please add notes for how to setup your project",
   "main": "server.js",
   "directories": {
     "doc": "docs"
@@ -12,18 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/c0dehot/project2-template.git"
+    "url": "git+https://github.com/c0dehot/dogstagram.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/c0dehot/project2-template/issues"
+    "url": "https://github.com/c0dehot/dogstagram/issues"
   },
-  "homepage": "https://github.com/c0dehot/project2-template#readme",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "moment": "^2.27.0",
-    "mysql": "^2.18.1"
-  }
+  "homepage": "https://github.com/c0dehot/dogstagram#readme"
 }

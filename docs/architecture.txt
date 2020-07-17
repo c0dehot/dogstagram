@@ -1,0 +1,31 @@
+ENDPOINTS
+=========
+MVP #1
+/api/dogs - GET a list of the dogs
+
+/api/dogs - POST a new doggie picture
+            * dog image / url
+            * some dog title
+            * keywords toggled
+            *+ image upload directly
+
+MVP #2
+/api/trends - GET show the top dogs by keyword 
+
+MVP #3
+/api/login
+/api/register
+
+DATABASE SCHEMA
+===============
+Users schema:
+    username: String
+    thumbnail: String
+    dogs: [ reference ]
+
+Dogs schema
+    title: String
+    image: String
+    keywords: [ ]
+    comments: [ ]
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dogstagram</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+
+    <!-- using bootstrap 5 for fun, no jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./assets/style.css">
+    <script src="assets/script.js"></script>
+</head>
+
+<!-- we will start the app when this page is loaded by running it with onLoad... -->
+<body>
+    <style>
+  
+    </style>
+
+    <div class="container">
+        <div id='apiMessage' class="alert alert-info d-none" role="alert">
+            A simple danger alert—check it out!
+        </div>
+        
+        <img id="logo" src="./assets/logo.png" class="float-left" />
+        <h1>Dogstagram Upload</h1>
+
+        <div class="row d-flex justify-content-center container">
+            <!-- don't made the list too wide if large screen -->
+            <form id='mediaForm' role="form" enctype="multipart/form-data" method="POST">
+                <div class="form-group">
+                    <label for="imageUrl" class='row'>
+                        <div class='col-6'>
+                        <select onChange='toggleMediaUpload(this.value)' id="imageType" name='imageType' class='form-control'>
+                            <option value="imageFile">Image File:</option>
+                            <option value="imageUrl">Image Url:</option>
+                        </select>
+                        </div>
+                        <!-- this column only appears when it's an actual file upload for resizing -->
+                        <div id='imageSizeCol' class='col-6 d-none'>
+                        <select id="imageSize" name='imageSize' class='form-control'>
+                            <option value="0x0">.. Resize ..</option>
+                            <option value="256x256">Thumbnail</option>
+                            <option value="1024x1024">Normal</option>
+                            <option value="5000x5000">Jumbo</option>
+                        </select>
+                        </div>
+                    </label>
+                    <input type="text" class="form-control" id="imageUrl" name='imageUrl'>
+                    <input type="file" id="imageFile" name='imageFile' accept="image/*" class='form-control d-none'>
+                    <label for="title">Title</label>
+                    <input type='text' id='title' name='title' class='form-control'>
+
+                </div>
+                <button onClick="uploadMedia(event)" class="btn btn-primary submit">Upload</button>
+            </form>            
+        </div>
+    </div>
+
+    <script>
+        function toggleMediaUpload( selectType='imageFile' ){
+            console.log( '[toggleMediaUpload] this', selectType )
+
+            if( selectType==='imageFile' ){
+                document.querySelector('#imageUrl').classList.add('d-none');
+                document.querySelector('#imageFile').classList.remove('d-none');
+                document.querySelector('#imageSizeCol').classList.remove('d-none');
+            } else {
+                document.querySelector('#imageUrl').classList.remove('d-none');
+                document.querySelector('#imageFile').classList.add('d-none');
+                document.querySelector('#imageSizeCol').classList.add('d-none');
+            }
+        }
+
+        // save the new form
+        async function uploadMedia( event ){
+            event.preventDefault()
+
+            //* because we are using the built-in browser form-builder, we need valid
+            //! **name** attributes - for ease we give same values as the id's
+            const uploadResponse = await apiCall( '/api/dogs', 'post', '#mediaForm' )
+            console.log( '[uploadResponse] ', uploadResponse )
+
+            if( uploadResponse.status ){
+                // clear the data
+                document.querySelector('#imageUrl').value = ''
+                document.querySelector('#imageFile').value = ''
+
+                // go to the main page
+                location.href = "/"                
+            }
+        }
+
+        toggleMediaUpload()
+    </script>
+</body>
+</html>

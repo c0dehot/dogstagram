@@ -7,13 +7,24 @@
     additional error / message handling for all API calls...
 */
 async function apiCall( url, method='get', data={} ){
-    let settings = {
-        method,
-        headers: { 'Content-Type': 'application/json' }
+    method = method.toLowerCase()
+    let settings = { method }
+
+    // for formData we must NOT set content-type, let system do it
+    const isFormData = (typeof data)==='string'
+    if( !isFormData ) {
+        settings.headers = { 'Content-Type': 'application/json' }
     }
+
     // only attach the body for put/post
     if( method === 'post' || method === 'put' ) {
-        settings.body = JSON.stringify( data )
+        if( isFormData ){
+            //* gather form data (esp. if attached media)
+            //! each entry to be attached must have a valid **name** attribute
+            settings.body = new FormData( document.querySelector(data) )
+        } else {
+            settings.body = JSON.stringify( data )
+        }
     }
 
     const result = await fetch( url,settings ).then( res=>res.json() )
@@ -34,6 +45,9 @@ async function apiCall( url, method='get', data={} ){
     return result
 }
 
+
+
+
 async function getDogs(){
     const dogList = await apiCall( '/api/dogs' )
     console.log( '[dogList]', dogList )
@@ -52,9 +66,27 @@ async function getDogs(){
                 + ` 
                 </div>
                 <small class="text-muted">${dog.createdAt ? 'Posted: '+moment(dog.createdAt).format('MMM Do, YYYY') : '' }</small>
+
+                <hr />
+                <form>
+                    <div class="input-group mb-3">
+                        <input id="comment_${dog._id}" type="text" class="form-control" placeholder="Write something about this dog">
+                        <button onClick="publishComment(event, '${dog._id}')" class="btn btn-outline-primary" type="button" id="button-addon2">Publish</button>
+                    </div>                            
+                </form>
+
             </div>
         `
     })
+}
+
+async function publishComment( event, dogId ){
+    // get teh comment first
+    const comment = document.querySelector(`#comment_${dogId}`).value
+
+    console.log( '[publishComment] comment=', comment )
+    const publishResult = await apiCall( '/api/dogs/comment', 'post', { _id: dogId, comment } )
+    console.log( ' .. finishing publishing comment for the dog: ', publishResult )
 }
 
 /* functions triggered by the html page */

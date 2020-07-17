@@ -28,8 +28,29 @@
             width: 64px;
             float: right;
         }
+
+        #apiMessage {
+            position: fixed;
+            width: 100%;
+            z-index: 999;
+        }
+
+        #addPicture {
+            position: fixed;
+            bottom: 100px;
+            right: 100px;
+            border-radius: 50%;
+            z-index: 999;
+        }
     </style>
-    <div class="container"> 
+
+    <div class="container">
+        <div id='apiMessage' class="alert alert-info d-none" role="alert">
+            A simple danger alert—check it out!
+        </div>
+        
+        <a href="/upload.html" id='addPicture' class='btn btn-lg btn-success'>Add</a>
+
         <img id="logo" src="./assets/logo.png" class="float-left" />
         <h1>Dogstagram</h1>
 
@@ -37,7 +58,27 @@
             <!-- don't made the list too wide if large screen -->
             <div id="dogList" class="col-md-8">
 
-                
+                <div class="card">
+                    <img src="https://cdn.discordapp.com/attachments/708208453528584212/733690892464160798/hqdefault.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Doug's Dog</h5>
+                        <img src='${dog.owner.thumbnail}' class="img-profile img-thumbnail rounded-circle" />
+
+                        <span class="badge bg-primary">Lovable</span>
+                        <span class="badge bg-primary">Sleepy</span>
+
+                        <small class="text-muted">Posted: MMM Do, YYYY</small>
+
+                        <hr />
+                        <form>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Write something about this dog">
+                                <button onClick="publishComment(event)" class="btn btn-outline-primary" type="button" id="button-addon2">Publish</button>
+                            </div>                            
+                        </form>
+                    </div>
+                  </div>
+            </div>
         </div>
     </div>
 </body>

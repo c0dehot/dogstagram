@@ -1,5 +1,11 @@
 const orm = require('./orm');
 
+// for the file-uploads
+const UPLOAD_PATH = process.env.UPLOAD_PATH || 'public/uploads/'
+const uploadResizer = require( './uploadResizer' )
+const upload = require('multer')({ dest: UPLOAD_PATH })
+
+
 function router( app ){
     app.get('/api/dogs', async function(req, res) {
         console.log( '[GET] getting dog list')
@@ -8,12 +14,19 @@ function router( app ){
         res.send( list )
     })
 
-    app.post( '/api/dogs', async function( req, res ){
-        const dogData = {
-            title: req.body.title.trim(),
-            image: req.body.image.trim(),
-            keywords: req.body.keywords
+    app.post( '/api/dogs', upload.single('imageFile'), async function( req, res ){
+        const dogData = req.body
+        dogData.image = dogData.imageUrl
+
+        if( req.file ){
+            // we have a picture upload so let's process it!
+            const [ resizeWidth, resizeHeight ] = dogData.imageSize.split('x')
+            const imageUrl = await uploadResizer('../'+req.file.path, req.file.originalname, resizeWidth, resizeHeight);
+            // assign in the thumbData so can use as normal
+            dogData.image = imageUrl
         }
+        console.log( '[POST /api/dogs] dogData: ', dogData )
+
         const saveResult = await orm.saveDog( dogData )
         console.log( '[POST /api/dogs] saveResult: ', saveResult )
 
@@ -23,6 +36,19 @@ function router( app ){
             res.send( { status: false, message: 'Someting went wong' } )
         }
 
+    })
+    // TODO: not working, comments not posted
+    app.post( '/api/dogs/comment', async function( req, res ){
+        // { _id, comment}
+        console.log( '[POST /api/dogs/comment ]', req.body )
+
+        const commentResult = await orm.addDogComment( { _id: req.body._id, comment: req.body.comment } )
+        console.log( ' commentResult: ', commentResult )
+        if( commentResult.nModified===1 ){
+            res.send( { status: true, message: 'Saved comment' } )
+        } else {
+            res.send( { status: false, message: 'Someting went wong' } )
+        }
     })
     // app.post('/api/tasks', async function(req, res) {
     //     console.log( '[POST] we received this data:', req.body )

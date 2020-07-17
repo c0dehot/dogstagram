@@ -43,6 +43,10 @@ function saveDog( dogData ){
     return db.Dogs.create( dogData )
 }
 
+function addDogComment( commentData ){
+    return db.Dogs.updateOne( { _id: commentData._id }, { $push: { comments: { comment: commentData.comment, name: 'anonymous' }} } )
+}
+
 module.exports = {
-    initDb, getDogList, saveDog
+    initDb, getDogList, saveDog, addDogComment
 }

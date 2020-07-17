@@ -17,7 +17,7 @@ const DogSchema = new Schema ({
         type: String,
         trim: true },
     keywords: [ { type: String, } ],
-    comments: [ { text: String, name: String } ]
+    comments: [ { comment: String, name: String } ]
 }, {
     timestamps: true /* creates corresponding timestamp fields: createdAt, updatedAt */
 });

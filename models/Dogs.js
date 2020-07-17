@@ -7,7 +7,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Dogs = new Schema ({
+const DogSchema = new Schema ({
     title:  {
         type: String,
         trim: true,
@@ -21,4 +21,4 @@ const Dogs = new Schema ({
     timestamps: true /* creates corresponding timestamp fields: createdAt, updatedAt */
 });
 
-module.exports = mongoose.model('Dogs', Dogs);
+module.exports = mongoose.model('Dogs', DogSchema);

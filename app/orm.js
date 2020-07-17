@@ -16,20 +16,20 @@ async function initDb(){
             image: 'https://cdn.discordapp.com/attachments/708208453528584212/733689355524243508/unknown.png',
             keywords: [ 'Zen'] }
     ])
-
+    console.log( ' dogs saved: ', dogResult )
     // add 2 users
-    db.users.insertMany([
-        {}
-    ])
+    // db.users.insertMany([
+    //     {}
+    // ])
 }
 function getDogList( criteria={} ){
-
+    return null
 }
 
 function saveDog( dogData ){
-
+    return null
 }
 
 module.exports = {
-    getDogList, saveDog
+    initDb, getDogList, saveDog
 }
